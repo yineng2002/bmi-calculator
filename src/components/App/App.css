@@ -2,6 +2,12 @@ body {
   background-color: #3600a2;
 }
 
+.header-wrapper {
+  text-align: end;
+  width: 50;
+  height: fit-content;
+}
+
 input {
   background-color: #fff !important;
   border-radius: 42px !important;
@@ -84,7 +90,7 @@ label {
 }
 
 .delete-btn {
-  background-color: #e74c3c;
+  background-color: black;
   color: white;
   border: none;
   border-radius: 50%;

@@ -2,6 +2,12 @@ body {
   background-color: #172b4d;
 }
 
+.header-wrapper {
+  text-align: end;
+  width: 50;
+  height: fit-content;
+}
+
 input {
   background-color: #fff !important;
   border-radius: 42px !important;

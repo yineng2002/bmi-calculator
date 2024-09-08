@@ -3,17 +3,36 @@ node_js:
   - 10.15.3
 cache: npm
 
+services:
+  - docker  # Enable Docker service in Travis CI
+
+before_install:
+  - docker --version  # Check Docker version for debugging
+
 install:
   - npm install
+  - npm install react-script@latest
 
 script:
   - npm run test -- --coverage
-  - npm run build
+  - npm run build               # Build the application
 
 after_success:
+  # Report test coverage to Codecov
   - CODECOV_TOKEN=$codecov_token npm run report-coverage
 
+  # Authenticate Docker with Docker Hub
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  
+  # Build Docker image using the Dockerfile
+  - docker build -t yineng2002/react-app:$TRAVIS_COMMIT .
+  
+  # Push Docker image to Docker Hub
+  - docker push yineng2002/react-app:$TRAVIS_COMMIT
+  
+  - docker run -p 3000:3000 react-app
 after_script:
+  # Report to Coveralls
   - COVERALLS_REPO_TOKEN=$coveralls_repo_token npm run coveralls
 
 deploy:
@@ -22,4 +41,4 @@ deploy:
   github-token: $GITHUB_TOKEN ${{ secrets.GITHUB_TOKEN }}
   local_dir: build
   on:
-    branch: master
+    branch: master
